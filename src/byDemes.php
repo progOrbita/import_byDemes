@@ -90,4 +90,17 @@ class ByDemes
         return $this->lastError;
     }
 
+    /**
+     * parse float 
+     * 
+     * @param string $number
+     * @param string $thousandSeparator
+     * @param string $decimalSparator
+     * 
+     * @return float
+     */
+    public static function parseFloat(string $number, string $thousandSeparator = '.', string $decimalSparator = ',')
+    {
+        return str_replace([$thousandSeparator, $decimalSparator], ['', '.'],  trim($number));
+    }
 }
