@@ -80,4 +80,14 @@ class ByDemes
         return $res;
     }
 
+    /**
+     * lastError getter 
+     * 
+     * @return string
+     */
+    public function getLastError()
+    {
+        return $this->lastError;
+    }
+
 }
