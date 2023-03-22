@@ -22,4 +22,23 @@ class ByDemes
         $this->fieldsMultilingual = $fieldsMultilingual;
     }
 
+    /**
+     * read csv´s data and save on $this->data
+     * 
+     * @param string $nameCsv
+     * @param int $lang
+     */
+    private function readCSVs(string $nameCsv)
+    {
+        $csv = new CsvImporter(
+            $this->header,
+            $this->csvLink . $nameCsv,
+            ',',
+            '"'
+        );
+
+        $data = $csv->read($this->key);
+        $this->lastError = $csv->getLastError();
+        return $data;
+    }
 }
