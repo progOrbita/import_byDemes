@@ -104,6 +104,34 @@ class ByDemes
     {
         return (float) str_replace([$thousandSeparator, $decimalSparator], ['', '.'],  trim($number));
     }
+
+    /**
+     * generate csv cache if json doesnt exist and return csv data 
+     * 
+     * @return array
+     */
+    public function getData(): array
     {
+        $fileName = _PS_CORE_DIR_ . '/import/byDemes/data/byDemes_' . Date('d-m-Y') . '.json';
+        $json = new JsonImporter($fileName);
+        if ($json->validateFile()) {
+            $data = $json->read();
+            if (empty($data)) {
+                echo $json->getLastError();
+            }
+
+            return $data;
+        }
+
+        $data = $this->getMultiLanguageData();
+        if (empty($data)) {
+            echo $this->lastError;
+        }
+
+        if (!$json->save($data, $fileName)) {
+            echo $json->getLastError();
+        }
+
+        return $data;
     }
 }
