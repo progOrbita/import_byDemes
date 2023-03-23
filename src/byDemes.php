@@ -1,5 +1,6 @@
 <?php
 require_once(_PS_CORE_DIR_ . '/import/files/src/CsvImporter.php');
+require_once(_PS_CORE_DIR_ . '/import/files/src/JsonImporter.php');
 
 class ByDemes
 {
