@@ -48,7 +48,7 @@ class ByDemes
      * 
      * @return array
      */
-    public function getMultiLanguageData()
+    public function getMultiLanguageData(): array
     {
         $res = [];
         foreach ($this->nameCSVs as $key => $value) {
@@ -77,7 +77,7 @@ class ByDemes
 
             $res = array_replace_recursive($res, $this->data[$key]);
         }
-        dump($res);
+
         return $res;
     }
 
@@ -100,8 +100,10 @@ class ByDemes
      * 
      * @return float
      */
-    public static function parseFloat(string $number, string $thousandSeparator = '.', string $decimalSparator = ',')
+    public static function parseFloat(string $number, string $thousandSeparator = '.', string $decimalSparator = ','): float
     {
-        return str_replace([$thousandSeparator, $decimalSparator], ['', '.'],  trim($number));
+        return (float) str_replace([$thousandSeparator, $decimalSparator], ['', '.'],  trim($number));
+    }
+    {
     }
 }
