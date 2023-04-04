@@ -18,5 +18,6 @@ $byDemes = new ByDemes(
     ['name', 'description', 'description_short', 'category', 'family', 'subfamily']
 );
 
+$data = $byDemes->getData((bool)Tools::getValue('reload', false));
 ?>
 
