@@ -16,4 +16,14 @@ class ByDemesCategories
         $this->data = $this->originalData;
     }
 
+    /**
+     * get $lastError
+     * 
+     * @return string
+     */
+    public function getLastError(): string
+    {
+        return $this->lastError;
+    }
+
 }
