@@ -15,6 +15,17 @@ class ByDemes
     private $key = "";
     private $fieldsMultilingual = [];
     private $lastError = "";
+    private $id_supp = 1;
+    private $supp_name = 'ByDemes';
+    private $stocks = [
+        'low' => 10,
+        'medium' => 50,
+        'high' => 100
+    ];
+    private $suppliers = [
+        'airspace' => 'processAirspace',
+        'crow' => 'processCrow',
+    ];
 
 
 
