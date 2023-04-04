@@ -9,4 +9,11 @@ class ByDemesCategories
     private $lastError = '';
     private $originalData = [];
 
+    public function __construct()
+    {
+        $json = new JsonImporter($this->name);
+        $this->originalData = $json->read();
+        $this->data = $this->originalData;
+    }
+
 }
