@@ -98,6 +98,19 @@ class ByDemes
     }
 
     /**
+     * proccess data for Airspace supplier
+     * 
+     * @param array $arr
+     */
+    public function processAirspace(array &$arr)
+    {
+        $arr['id_supplier'] = 2;
+        $arr['supplier_name'] = 'byDemesAirspace';
+        $arr['price'] = round((float)$arr['wholesale_price'] * 2.3, 2);
+
+    }
+
+    /**
      * proccess data for Crow supplier
      * 
      * @param array $arr
