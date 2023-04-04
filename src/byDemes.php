@@ -8,7 +8,7 @@ require_once(_PS_CORE_DIR_ . '/config/config.inc.php');
 class ByDemes
 {
     private $lang = [];
-    private $csvLink = "";
+    private $csvRoute = "";
     private $data = [];
     private $header = [];
     private $nameCSVs = [];
@@ -16,9 +16,11 @@ class ByDemes
     private $fieldsMultilingual = [];
     private $lastError = "";
 
-    public function __construct(string $csvLink, array $header, array $nameCSVs, array $fieldsMultilingual, string $key = "supplier_reference")
+
+
+    public function __construct(string $csvRoute, array $header, array $nameCSVs, array $fieldsMultilingual, string $key = "supplier_reference")
     {
-        $this->csvLink = $csvLink;
+        $this->csvRoute = $csvRoute;
         $this->header = $header;
         $this->nameCSVs = $nameCSVs;
         $this->lang = array_keys($nameCSVs);
@@ -36,7 +38,7 @@ class ByDemes
     {
         $csv = new CsvImporter(
             $this->header,
-            $this->csvLink . $nameCsv,
+            $this->csvRoute . $nameCsv,
             ',',
             '"'
         );
