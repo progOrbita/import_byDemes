@@ -37,4 +37,21 @@ class ByDemesManufacturer
         return ucfirst(strtolower(trim($name)));
     }
 
+    /**
+     * create new manufacturer 
+     * 
+     * @param string $name 
+     * 
+     * @return int id_manufacturer
+     */
+    private static function createManufacturer($name): int
+    {
+        $manufacturer = new Manufacturer();
+        $manufacturer->name = $name;
+        if ($manufacturer->save()) {
+            return $manufacturer->id;
+        }
+
+        return 0;
+    }
 }
