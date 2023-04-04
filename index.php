@@ -23,5 +23,6 @@ if (empty($data)) {
     echo $byDemes->getLastError();
     die;
 }
+$ps_data = Db::getInstance()->executeS('SELECT `id_product`, `supplier_reference` FROM `ps_product` WHERE `id_supplier` IN (1,2,3)');
 ?>
 
