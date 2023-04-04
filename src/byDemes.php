@@ -68,6 +68,11 @@ class ByDemes
      */
     public function getMultiLanguageData(): array
     {
+        if (empty($this->nameCSVs)) {
+            $this->lastError = 'No existen datos a procesar';
+            return [];
+        }
+
         $res = [];
         foreach ($this->nameCSVs as $key => $value) {
             $this->data[$key] = $this->readCSVs($value);
