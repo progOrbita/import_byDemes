@@ -25,4 +25,16 @@ class ByDemesManufacturer
         return self::createManufacturer($name);
     }
 
+    /**
+     * format name example 'a Di DA s'-> 'Adidas'
+     * 
+     * @param string $name
+     * 
+     * @return string 
+     */
+    public static function formatName(string $name): string
+    {
+        return ucfirst(strtolower(trim($name)));
+    }
+
 }
