@@ -100,6 +100,24 @@ class ByDemes
     }
 
     /**
+     * check if field has the language value that we want if it doesnt have value we set it 
+     * 
+     * @param array $arr
+     * @param int $idLang
+     * @param mixed $default
+     * 
+     * @return mixed
+     */
+    private function checkLangugeField(array $arr, int $idLang = 3, $default = '')
+    {
+        if (!isset($arr[$idLang])) {
+            $arr[$idLang] = $default;
+        }
+
+        return $arr[$idLang];
+    }
+
+    /**
      * proccess data for Airspace supplier
      * 
      * @param array $arr
