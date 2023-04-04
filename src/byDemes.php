@@ -83,14 +83,8 @@ class ByDemes
             }
 
             foreach ($this->data[$key] as $id_supp => $element) {
-                $this->data[$key][$id_supp]['wholesale_price'] = round((float) $this->parseFloat($this->data[$key][$id_supp]['wholesale_price']), 2);
-                $this->data[$key][$id_supp]['quantity'] = (int) $this->data[$key][$id_supp]['quantity'];
-                $this->data[$key][$id_supp]['active'] =  ($this->data[$key][$id_supp]['active'] == 'True');
-                $this->data[$key][$id_supp]['depth'] = round((float) $this->parseFloat(floatval($this->data[$key][$id_supp]['depth'])), 2);
-                $this->data[$key][$id_supp]['width'] = round((float) $this->parseFloat(floatval($this->data[$key][$id_supp]['width'])), 2);
-                $this->data[$key][$id_supp]['height'] = round((float) $this->parseFloat(floatval($this->data[$key][$id_supp]['height'])), 2);
-                $this->data[$key][$id_supp]['volume'] = round((float) $this->parseFloat(floatval($this->data[$key][$id_supp]['volume'])), 2);
-                $this->data[$key][$id_supp]['weight'] = round((float) $this->parseFloat(floatval($this->data[$key][$id_supp]['weight'])), 2);
+                $this->data[$key][$id_supp]['id_supplier'] = $this->id_supp;
+                $this->data[$key][$id_supp]['supplier_name'] = $this->supp_name;
                 foreach ($this->fieldsMultilingual as $field) {
                     if ($this->data[$key][$id_supp][$field]) {
                         $this->data[$key][$id_supp][$field] = [$key => $this->data[$key][$id_supp][(string)$field]];
