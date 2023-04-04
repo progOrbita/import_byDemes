@@ -74,10 +74,10 @@ class ByDemes
         }
 
         $res = [];
+        $categories = new ByDemesCategories();
         foreach ($this->nameCSVs as $key => $value) {
             $this->data[$key] = $this->readCSVs($value);
             if (empty($this->data[$key])) {
-                //todo check errors
                 $this->lastError = "Error con la lectura del csv " . $value . ":" . $this->lastError;
                 return [];
             }
@@ -95,6 +95,32 @@ class ByDemes
             $res = array_replace_recursive($res, $this->data[$key]);
         }
 
+        foreach ($res as $key => $field) {
+            $res[$key]['wholesale_price'] = round((float) $this->parseFloat($res[$key]['wholesale_price']), 2);
+            $res[$key]['price'] = round((float) $this->parseFloat($res[$key]['price']), 2);
+            $res[$key]['quantity'] = $this->stocks[strtolower(trim($res[$key]['quantity']))] ?? 0;
+            $res[$key]['active'] = ($res[$key]['active'] == 'True');
+            $res[$key]['on_sale'] = true;
+            $res[$key]['show_price'] = true;
+            $res[$key]['visibility'] = 'both';
+            $res[$key]['depth'] = round((float) $this->parseFloat(floatval($res[$key]['depth'])), 2);
+            $res[$key]['width'] = round((float) $this->parseFloat(floatval($res[$key]['width'])), 2);
+            $res[$key]['height'] = round((float) $this->parseFloat(floatval($res[$key]['height'])), 2);
+            $res[$key]['volume'] = round((float) $this->parseFloat(floatval($res[$key]['volume'])), 2);
+            $res[$key]['weight'] = round((float) $this->parseFloat(floatval($res[$key]['weight'])), 2);
+            $res[$key]['manufacturer_id'] = ByDemesManufacturer::get($res[$key]['manufacturer_name']);
+            $res[$key]['category'][3] = $this->checkLangugeField($res[$key]['category']);
+            $res[$key]['family'][3] = $this->checkLangugeField($res[$key]['family']);
+            $res[$key]['subfamily'][3] = $this->checkLangugeField($res[$key]['subfamily']);
+            $res[$key]['id_category_default'] = $categories->get($categories->getBreadCrums([$res[$key]['category'][3], $res[$key]['family'][3], $res[$key]['subfamily'][3]]));
+            if (!isset($this->suppliers[strtolower(trim($res[$key]['manufacturer_name']))])) {
+                continue;
+            }
+
+            call_user_func_array([$this, $this->suppliers[strtolower(trim($res[$key]['manufacturer_name']))]], [&$res[$key]]);
+        }
+
+        $categories->save();
         return $res;
     }
 
