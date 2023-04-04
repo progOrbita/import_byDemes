@@ -19,5 +19,9 @@ $byDemes = new ByDemes(
 );
 
 $data = $byDemes->getData((bool)Tools::getValue('reload', false));
+if (empty($data)) {
+    echo $byDemes->getLastError();
+    die;
+}
 ?>
 
