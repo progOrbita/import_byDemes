@@ -38,4 +38,18 @@ class Actions
         return 'Descatalogado correctamente';
     }
 
+
+    /**
+     * compare if 2 float are really differents
+     * 
+     * @param float $n1
+     * @param float $n2
+     * @param float $diff
+     * 
+     * @return bool
+     */
+    public static function isFloatEqual(float $n1, float $n2, float $diff = 0.01): bool
+    {
+        return abs($n1 - $n2) < $diff;
+    }
 }
