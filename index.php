@@ -52,5 +52,12 @@ if ($ps_data === false) {
     ?>
 </body>
 
+<script>
+    $(document).ready(function() {
+        $('#data').DataTable({
+            paging: false
+        });
+    });
+</script>
 
 </html>
