@@ -44,8 +44,10 @@ class ByDemes
      * 
      * @param string $nameCsv
      * @param int $lang
+     * 
+     * @return array
      */
-    private function readCSVs(string $nameCsv)
+    private function readCSVs(string $nameCsv): array
     {
         $csv = new CsvImporter(
             $this->header,
@@ -101,19 +103,22 @@ class ByDemes
      * proccess data for Airspace supplier
      * 
      * @param array $arr
+     * 
+     * @return void
      */
     public function processAirspace(array &$arr)
     {
         $arr['id_supplier'] = 2;
         $arr['supplier_name'] = 'byDemesAirspace';
         $arr['price'] = round((float)$arr['wholesale_price'] * 2.3, 2);
-
     }
 
     /**
      * proccess data for Crow supplier
      * 
      * @param array $arr
+     * 
+     * @return void
      */
     public function processCrow(array &$arr)
     {
@@ -127,7 +132,7 @@ class ByDemes
      * 
      * @return string
      */
-    public function getLastError()
+    public function getLastError(): string
     {
         return $this->lastError;
     }
