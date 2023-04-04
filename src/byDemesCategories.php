@@ -26,4 +26,16 @@ class ByDemesCategories
         return $this->lastError;
     }
 
+    /**
+     * function to build breadcrums
+     * 
+     * @param array $steps
+     * 
+     * @return string
+     */
+    public function getBreadCrums(array $steps): string
+    {
+        return implode('->', array_filter(array_map('trim', $steps)));
+    }
+
 }
