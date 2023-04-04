@@ -38,4 +38,24 @@ class ByDemesCategories
         return implode('->', array_filter(array_map('trim', $steps)));
     }
 
+    /**
+     * function to get id_category_default or create it
+     * 
+     * @param string $breadcrum
+     * 
+     * @return int 
+     */
+    public function get(string $breadcrum): int
+    {
+        if (empty($breadcrum)) {
+            return 0;
+        }
+
+        if (!isset($this->data[$breadcrum])) {
+            $this->data[$breadcrum] = 0;
+        }
+
+        return (int) $this->data[$breadcrum];
+    }
+
 }
