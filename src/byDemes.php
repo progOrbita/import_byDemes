@@ -98,6 +98,18 @@ class ByDemes
     }
 
     /**
+     * proccess data for Crow supplier
+     * 
+     * @param array $arr
+     */
+    public function processCrow(array &$arr)
+    {
+        $arr['id_supplier'] = 3;
+        $arr['supplier_name'] = 'byDemesCrow';
+        $arr['price'] = round((float) $arr['price'] + 25, 2);
+    }
+
+    /**
      * lastError getter 
      * 
      * @return string
