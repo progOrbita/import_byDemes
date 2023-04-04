@@ -24,5 +24,9 @@ if (empty($data)) {
     die;
 }
 $ps_data = Db::getInstance()->executeS('SELECT `id_product`, `supplier_reference` FROM `ps_product` WHERE `id_supplier` IN (1,2,3)');
+if ($ps_data === false) {
+    echo 'consulta erronea a la db';
+    die;
+}
 ?>
 
