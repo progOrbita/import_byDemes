@@ -153,14 +153,15 @@ class ByDemes
 
     /**
      * generate csv cache if json doesnt exist and return csv data 
+     * @param bool $reload
      * 
      * @return array
      */
-    public function getData(): array
+    public function getData(bool $reload = false): array
     {
         $fileName = _PS_CORE_DIR_ . '/import/byDemes/data/byDemes_' . Date('d-m-Y') . '.json';
         $json = new JsonImporter($fileName);
-        if ($json->validateFile()) {
+        if ($json->validateFile() && !$reload) {
             $data = $json->read();
             if (empty($data)) {
                 echo $json->getLastError();
@@ -172,6 +173,7 @@ class ByDemes
         $data = $this->getMultiLanguageData();
         if (empty($data)) {
             echo $this->lastError;
+            return $data;
         }
 
         if (!$json->save($data, $fileName)) {
