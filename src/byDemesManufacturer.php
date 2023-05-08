@@ -48,6 +48,7 @@ class ByDemesManufacturer
     {
         $manufacturer = new Manufacturer();
         $manufacturer->name = $name;
+        $manufacturer->active = true;
         if ($manufacturer->save()) {
             return $manufacturer->id;
         }
