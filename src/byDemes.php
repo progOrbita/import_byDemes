@@ -282,7 +282,6 @@ class ByDemes
 
         $data = $this->getMultiLanguageData();
         if (empty($data)) {
-            echo $this->lastError;
             return $data;
         }
 
