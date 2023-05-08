@@ -40,6 +40,83 @@ class Actions extends AdminImportControllerCore
         return 'Descatalogado correctamente';
     }
 
+    /**
+     * update ps product data 
+     * 
+     * @param int $idProduct
+     * @param array $productData
+     * 
+     * @return string
+     */
+    public static function update(int $idProduct, array $productData, bool $write = false): string
+    {
+        global $cat;
+        $changes = false;
+        $product = new Product($idProduct);
+        $product->loadStockData();
+        if ($productData['quantity'] != $product->quantity) {
+            $changes[] = 'quantity (' . $product->quantity . '->' . $productData['quantity'] . ')';
+            $write && StockAvailable::setQuantity($idProduct, 0, $productData['quantity']);
+            $product->quantity = $productData['quantity'];
+        }
+
+
+        if ($productData['price'] < 0.01 || self::isFloatEqual($productData['price'], $product->price)) {
+            $productData['price'] = $product->price;
+        }
+
+        if ($productData['wholesale_price'] < 0.01 || self::isFloatEqual($productData['wholesale_price'], $product->wholesale_price)) {
+            $productData['wholesale_price'] = $product->wholesale_price;
+        }
+
+        if ($productData['id_supplier'] > 0 && $productData['supplier_reference']) {
+            $product->addSupplierReference($productData['id_supplier'], 0, $productData['supplier_reference']);
+        }
+
+        foreach ($productData as $key => $value) {
+            if (!isset($product->$key) || $key == 'category') {
+                continue;
+            }
+
+            if (!empty($productData[$key]) && $productData[$key] != $product->{$key}) {
+                if (is_array($productData[$key])) {
+                    $changes[] = $key . ' (array , array)';
+                    $product->{$key} = $productData[$key];
+                    continue;
+                }
+
+                $changes[] = $key . ' (' . $product->{$key} . '->' . $productData[$key] . ')';
+                $product->{$key} = $productData[$key];
+            }
+        }
+
+        if ($product->id_category_default == 10) {
+            if ($productData['id_category_default'] < 1) {
+                return 'No se ha podido recatalogar por problemas en la relacion de las categorias';
+            }
+
+            $product->available_for_order = true;
+            $product->visibility = 'both';
+            $product->id_category_default = $productData['id_category_default'];
+            $product->show_price = true;
+            $product->updateCategories($cat->getCacheCategories($productData['id_category_default']));
+        }
+
+        if (!$changes) {
+            return 'Sin cambios';
+        }
+
+        if (!$write) {
+            return 'Datos a actualizar: ' . implode(',', $changes);
+        }
+
+        if (!$product->update()) {
+            return 'Error con la actualizacion';
+        }
+
+        return 'Actualizado: ' . implode(',', $changes);
+    }
+
 
     /**
      * compare if 2 float are really differents
