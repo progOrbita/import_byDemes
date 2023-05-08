@@ -32,6 +32,7 @@ class Actions extends AdminImportControllerCore
         StockAvailable::setQuantity($idProduct, 0, 0);
         $product->id_category_default = 10;
         $product->updateCategories([2, 10]);
+        $product->show_price = false;
         if (!$product->save()) {
             return 'Error al descatalogar';
         }
