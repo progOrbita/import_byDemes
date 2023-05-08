@@ -140,6 +140,23 @@ class ByDemes
     }
 
     /**
+     * function to addapt text to max lenght of field
+     * 
+     * @param string $text
+     * @param int $maxLength
+     * 
+     * @return string
+     */
+    private function addaptMaxLength(string $text, int $maxLength): string
+    {
+        if ($text < $maxLength) {
+            return $text;
+        }
+
+        $text = substr($text, 0, $maxLength - 3) . '...';
+    }
+
+    /**
      * check if field has the language value that we want if it doesnt have value we set it 
      * 
      * @param array $arr
