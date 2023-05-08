@@ -3,7 +3,7 @@
 require_once(_PS_CORE_DIR_ . '/import/arbol-categorias/src/Categories.php');
 require_once(_PS_CORE_DIR_ . '/config/config.inc.php');
 
-class Actions
+class Actions extends AdminImportControllerCore
 {
     /**
      * make some product discontinued
