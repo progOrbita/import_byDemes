@@ -85,8 +85,22 @@ class ByDemes
             foreach ($this->data[$key] as $id_supp => $element) {
                 $this->data[$key][$id_supp]['id_supplier'] = $this->id_supp;
                 $this->data[$key][$id_supp]['supplier_name'] = $this->supp_name;
+                $name = trim($this->data[$key][$id_supp]['name']);
+                $short_description = trim($this->data[$key][$id_supp]['description_short']);
+                $description = trim($this->data[$key][$id_supp]['description']);
+                $nameLink = strip_tags($this->data[$key][$id_supp]['manufacturer_name'] . ' ' . $this->data[$key][$id_supp]['reference'] . ' ' . $name);
+                $this->data[$key][$id_supp]['link_rewrite'] = [$key => $this->buildLinkRewrite($nameLink)];
+                $this->data[$key][$id_supp]['name'] = [$key => $this->addaptMaxLength(strip_tags($this->data[$key][$id_supp]['manufacturer_name'] . ' ' . $this->data[$key][$id_supp]['reference'] . ' ' . $name), 128)];
+                $this->data[$key][$id_supp]['description_short'] = [$key => $this->addaptMaxLength($this->data[$key][$id_supp]['name'][$key] . ' ' . strip_tags($short_description), 800)];
+                $this->data[$key][$id_supp]['description'] = [$key => '<p>' . $this->data[$key][$id_supp]['manufacturer_name'] . ' ' . $this->data[$key][$id_supp]['reference'] . ' ' . $name . '</p><div>' . $short_description . '</div><br /><div>' . $this->clearDescription($description) . '</div>'];
+                $this->data[$key][$id_supp]['description_short'][$key] = ObjectModel::formatValue($this->data[$key][$id_supp]['description_short'][$key], 6, false, true, false);
+                if (!empty($this->data[$key][$id_supp]['model']) && $this->data[$key][$id_supp]['model'] != $this->data[$key][$id_supp]['reference']) {
+                    $this->data[$key][$id_supp]['description'][$key] .= '<p>' . $this->data[$key][$id_supp]['model'] . '</p>';
+                }
+
+                $this->data[$key][$id_supp]['description'][$key] = ObjectModel::formatValue($this->data[$key][$id_supp]['description'][$key], 6, false, true, false);
                 foreach ($this->fieldsMultilingual as $field) {
-                    if ($this->data[$key][$id_supp][$field]) {
+                    if ($this->data[$key][$id_supp][$field] && !is_array($this->data[$key][$id_supp][$field])) {
                         $this->data[$key][$id_supp][$field] = [$key => $this->data[$key][$id_supp][(string)$field]];
                     }
                 }
@@ -108,11 +122,12 @@ class ByDemes
             $res[$key]['height'] = round((float) $this->parseFloat(floatval($res[$key]['height'])), 2);
             $res[$key]['volume'] = round((float) $this->parseFloat(floatval($res[$key]['volume'])), 2);
             $res[$key]['weight'] = round((float) $this->parseFloat(floatval($res[$key]['weight'])), 2);
-            $res[$key]['manufacturer_id'] = ByDemesManufacturer::get($res[$key]['manufacturer_name']);
-            $res[$key]['category'][3] = $this->checkLangugeField($res[$key]['category']);
-            $res[$key]['family'][3] = $this->checkLangugeField($res[$key]['family']);
-            $res[$key]['subfamily'][3] = $this->checkLangugeField($res[$key]['subfamily']);
-            $res[$key]['id_category_default'] = $categories->get($categories->getBreadCrums([$res[$key]['category'][3], $res[$key]['family'][3], $res[$key]['subfamily'][3]]));
+            $res[$key]['id_manufacturer'] = ByDemesManufacturer::get($res[$key]['manufacturer_name']);
+            $res[$key]['category'] = $this->checkLangugeField($res[$key]['category']);
+            $res[$key]['family'] = $this->checkLangugeField($res[$key]['family']);
+            $res[$key]['subfamily'] = $this->checkLangugeField($res[$key]['subfamily']);
+            $res[$key]['breadcrumb'] = $categories->getBreadCrums([$res[$key]['category'], $res[$key]['family'], $res[$key]['subfamily']]);
+            $res[$key]['id_category_default'] = $categories->get($res[$key]['breadcrumb']);
             if (!isset($this->suppliers[strtolower(trim($res[$key]['manufacturer_name']))])) {
                 continue;
             }
