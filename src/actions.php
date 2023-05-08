@@ -117,6 +117,70 @@ class Actions extends AdminImportControllerCore
         return 'Actualizado: ' . implode(',', $changes);
     }
 
+    /**
+     * function to create product
+     * 
+     * @param array $productData
+     * @param bool $write
+     * 
+     * @return string
+     */
+    public static function create(array $productData, bool $write = false): string
+    {
+        global $cat;
+        if ($productData['id_category_default'] < 1) {
+            return 'Error en la creación, categoria no relacionada: ' . $productData['breadcrumb'];
+        }
+
+        if ($productData['price'] < 0.01) {
+            return 'Error en la creación, precio inválido';
+        }
+
+        if ($productData['wholesale_price'] < 0.01) {
+            return 'Error en la creación, precio de compra inválido';
+        }
+
+        if ($productData['quantity'] < 1) {
+            return 'Error en la creación, cantidad de producto inválida';
+        }
+
+        if (!$write) {
+            return 'Producto a crear';
+        }
+
+        $product = new Product();
+        foreach ($productData as $key => $value) {
+            if (!property_exists(new Product, $key) || $key == 'category') {
+                continue;
+            }
+
+            if (!empty($productData[$key])) {
+                if (is_array($productData[$key])) {
+                    $product->{$key} = $productData[$key];
+                    continue;
+                }
+
+                $product->{$key} = $productData[$key];
+            }
+        }
+
+        // accesorios ps_accesory id_product->id_product_accesory Product::changeAccessoriesForProduct()
+        $product->id_tax_rules_group = 1;
+        if (!$product->save()) {
+            return 'Error creacion del producto';
+        }
+
+        StockAvailable::setQuantity($product->id, 0, $productData['quantity']);
+        $product->updateCategories($cat->getCacheCategories($productData['id_category_default']));
+        $product->addSupplierReference($productData['id_supplier'], 0, $productData['supplier_reference']);
+        if (!empty($productData['imageURL'])) {
+            if (!self::createImg($product->id, $productData['imageURL'], $productData['name'])) {
+                return 'Producto creado, pero error con el creado de imagenes';
+            }
+        }
+
+        return 'Producto creado correctamente';
+    }
 
     /**
      * compare if 2 float are really differents
