@@ -171,6 +171,26 @@ class ByDemes
     }
 
     /**
+     * function to clear product description
+     * 
+     * @param string $description
+     * 
+     * @return string
+     */
+    private function clearDescription(string $description)
+    {
+        $description = trim($description);
+        $description = preg_replace('/<img.*>/iU', '', $description);
+        $description = preg_replace('/style=[\"|\'].*[\"|\']/U', '', $description);
+        $description = preg_replace('/id=[\"|\'].*[\"|\']/U', '', $description);
+        $description = preg_replace('/class=[\"|\'].*[\"|\']/U', '', $description);
+        $description = preg_replace('/[\s]{2,}/', ' ', $description);
+        $description = preg_replace('/<[^<>\/]+>\s*<\/[^<>]+>/U', '', $description);
+        $description = preg_replace('/<span[^>\/]*>|<\/span[^<>]*>/U', '', $description);
+        $description = preg_replace('/([^<>]*)<br[^>]*>/U', '<p>$1</p>', $description);
+        return preg_replace('/<[^<>\/]+>\s*<\/[^<>]+>/U', '', $description);
+    }
+
     /**
      * check if field has the language value that we want if it doesnt have value we set it 
      * 
