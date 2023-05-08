@@ -38,6 +38,27 @@ if ($ps_data === false) {
     die;
 }
 
+$ps_data = array_combine(array_column($ps_data, 'supplier_reference'), array_column($ps_data, 'id_product'));
+$supplier_references = array_unique(array_merge(array_keys($ps_data), array_keys($data)));
+$res = [];
+$cat = new Categories(1);
+foreach ($supplier_references as $reference) {
+    try {
+        if (!isset($ps_data[$reference])) {
+            $res[] = ['supplier_reference' => $reference . " " . $data[$reference]['reference'], 'res' => Actions::create($data[$reference], (bool)Tools::getValue('write', false))];
+            continue;
+        }
+
+        if (!isset($data[$reference])) {
+            $res[] = ['supplier_reference' => "" . $reference . "", 'res' => Actions::discontinue($ps_data[$reference], (bool)Tools::getValue('write', false))];
+            continue;
+        }
+
+        $res[] = ['supplier_reference' => $reference . " " . $data[$reference]['reference'], 'res' => Actions::update((int) $ps_data[$reference], $data[$reference], (bool)Tools::getValue('write', false))];
+    } catch (Throwable $e) {
+        $res[] = ['supplier_reference' => $reference, 'res' => 'Excepción capturada: ' .  $e->getMessage()];
+    }
+}
 ?>
 
 <!DOCTYPE html>
