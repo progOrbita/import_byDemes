@@ -157,6 +157,21 @@ class ByDemes
     }
 
     /**
+     * function to build product link rewrite
+     * 
+     * @param string $name
+     * 
+     * @return string
+     */
+    private function buildLinkRewrite(string $name): string
+    {
+        $text = preg_replace('/\W/U', '-', $name);
+        $text = preg_replace('/-{2,}/U', '-', $text);
+        return trim(strtolower($text), '-');
+    }
+
+    /**
+    /**
      * check if field has the language value that we want if it doesnt have value we set it 
      * 
      * @param array $arr
