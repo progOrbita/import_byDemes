@@ -11,6 +11,11 @@ require_once(_PS_CORE_DIR_ . '/import/files/src/Table.php');
 require_once(_PS_CORE_DIR_ . '/import/arbol-categorias/src/Categories.php');
 
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+ini_set("memory_limit", "-1");
+set_time_limit(0);
 $byDemes = new ByDemes(
     __DIR__ . "/data/",
     [
@@ -26,11 +31,13 @@ if (empty($data)) {
     echo $byDemes->getLastError();
     die;
 }
+
 $ps_data = Db::getInstance()->executeS('SELECT `id_product`, `supplier_reference` FROM `ps_product` WHERE `id_supplier` IN (1,2,3)');
 if ($ps_data === false) {
     echo 'consulta erronea a la db';
     die;
 }
+
 ?>
 
 <!DOCTYPE html>
