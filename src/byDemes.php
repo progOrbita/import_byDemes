@@ -1,9 +1,9 @@
 <?php
-require_once(_PS_CORE_DIR_ . '/import/files/src/CsvImporter.php');
-require_once(_PS_CORE_DIR_ . '/import/files/src/JsonImporter.php');
 require_once(_PS_CORE_DIR_ . '/import/byDemes/src/byDemesManufacturer.php');
 require_once(_PS_CORE_DIR_ . '/import/byDemes/src/byDemesCategories.php');
-require_once(_PS_CORE_DIR_ . '/config/config.inc.php');
+
+use Orbitadigital\Odfiles\CsvImporter;
+use Orbitadigital\Odfiles\JsonImporter;
 
 class ByDemes
 {

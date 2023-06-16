@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require_once '../../config/config.inc.php';
+require_once __DIR__ . '/../files/vendor/autoload.php';
 require_once __DIR__ . '/src/byDemes.php';
 require_once __DIR__ . '/src/byDemesManufacturer.php';
 require_once __DIR__ . '/src/byDemesCategories.php';
 require_once __DIR__ . '/src/Actions.php';
-require_once(_PS_CORE_DIR_ . '/import/files/src/Table.php');
 require_once(_PS_CORE_DIR_ . '/import/arbol-categorias/src/Categories.php');
+use Orbitadigital\Odfiles\Table;
 
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-ini_set("memory_limit", "-1");
-set_time_limit(0);
 $byDemes = new ByDemes(
     __DIR__ . "/data/",
     [
